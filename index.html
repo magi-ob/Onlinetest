@@ -1,0 +1,3745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Security & Networking Quiz | Magarsa S.</title>
+
+    <meta name="description"
+          content="100-question Security and Networking online examination quiz by Magarsa S.">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            min-height: 100vh;
+            color: #1e293b;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 17px;
+            opacity: 0.9;
+        }
+
+        /* Start screen */
+        #startScreen {
+            display: block;
+        }
+
+        .welcome {
+            text-align: center;
+        }
+
+        .welcome h2 {
+            font-size: 30px;
+            margin-bottom: 15px;
+            color: #1e3a8a;
+        }
+
+        .welcome p {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .instructions {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            margin-bottom: 12px;
+            color: #1e3a8a;
+        }
+
+        .instructions li {
+            margin: 10px 0;
+            margin-left: 25px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 10px;
+            padding: 13px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.92;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-success {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        /* Quiz */
+        #quizScreen,
+        #resultScreen {
+            display: none;
+        }
+
+        .quiz-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .question-counter {
+            font-weight: bold;
+            color: #1e3a8a;
+            font-size: 18px;
+        }
+
+        .timer {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            min-width: 130px;
+            text-align: center;
+        }
+
+        .timer.warning {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .timer.safe {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            border-radius: 20px;
+            height: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #2563eb;
+            transition: width 0.3s ease;
+        }
+
+        .question {
+            font-size: 23px;
+            font-weight: bold;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #0f172a;
+        }
+
+        .options {
+            display: grid;
+            gap: 14px;
+        }
+
+        .option {
+            border: 2px solid #cbd5e1;
+            background: #ffffff;
+            padding: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 16px;
+        }
+
+        .option:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .option.selected {
+            border-color: #2563eb;
+            background: #dbeafe;
+        }
+
+        .option.correct {
+            border-color: #16a34a;
+            background: #dcfce7;
+        }
+
+        .option.incorrect {
+            border-color: #dc2626;
+            background: #fee2e2;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .question-map {
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(42px, 1fr));
+            gap: 7px;
+        }
+
+        .map-btn {
+            border: none;
+            background: #e2e8f0;
+            padding: 9px 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .map-btn.current {
+            background: #2563eb;
+            color: white;
+        }
+
+        .map-btn.answered {
+            background: #86efac;
+            color: #14532d;
+        }
+
+        /* Result */
+        .result-box {
+            text-align: center;
+        }
+
+        .result-box h2 {
+            font-size: 32px;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 12px solid #2563eb;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+        }
+
+        .score-circle strong {
+            font-size: 42px;
+            color: #1e3a8a;
+        }
+
+        .score-circle span {
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .result-message {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .result-stat {
+            padding: 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        .result-stat strong {
+            display: block;
+            font-size: 28px;
+            color: #1e3a8a;
+        }
+
+        .result-stat span {
+            color: #64748b;
+        }
+
+        .result-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        /* Review */
+        #reviewContainer {
+            margin-top: 25px;
+            display: none;
+        }
+
+        .review-item {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .review-item h3 {
+            margin-bottom: 12px;
+        }
+
+        .review-answer {
+            padding: 10px;
+            border-radius: 7px;
+            margin: 7px 0;
+        }
+
+        .review-correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .review-wrong {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .review-unanswered {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .explanation {
+            background: #eff6ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        /* Answer key */
+        #answerKeyContainer {
+            display: none;
+            margin-top: 25px;
+        }
+
+        .answer-key-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 8px;
+        }
+
+        .answer-key-item {
+            background: #f1f5f9;
+            padding: 10px;
+            border-radius: 7px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: white;
+            margin: 25px 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Mobile */
+        @media (max-width: 700px) {
+            .container {
+                width: 96%;
+                margin: 15px auto;
+            }
+
+            .card {
+                padding: 18px;
+                border-radius: 12px;
+            }
+
+            .header h1 {
+                font-size: 27px;
+            }
+
+            .question {
+                font-size: 19px;
+            }
+
+            .result-details {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .navigation .btn {
+                width: 100%;
+            }
+
+            .timer {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Security & Networking Quiz</h1>
+        <p>100 Multiple-Choice Questions</p>
+    </div>
+
+    <!-- START SCREEN -->
+    <div id="startScreen" class="card">
+        <div class="welcome">
+
+            <h2>Welcome to the Examination</h2>
+
+            <p>
+                Test your knowledge of computer networking,
+                cybersecurity, network protocols, threats,
+                authentication, firewalls, encryption and more.
+            </p>
+
+            <div class="instructions">
+                <h3>Examination Instructions</h3>
+
+                <ul>
+                    <li>Total Questions: <strong>100</strong></li>
+                    <li>Time Allowed: <strong>60 Minutes</strong></li>
+                    <li>Each question has one correct answer.</li>
+                    <li>You can move between questions.</li>
+                    <li>You may review your answers before submitting.</li>
+                    <li>The examination will automatically submit when time expires.</li>
+                    <li>Your score is calculated immediately.</li>
+                </ul>
+            </div>
+
+            <button class="btn btn-primary" onclick="startQuiz()">
+                Start Examination
+            </button>
+
+        </div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quizScreen" class="card">
+
+        <div class="quiz-top">
+
+            <div class="question-counter">
+                Question <span id="currentQuestion">1</span>
+                of <span id="totalQuestions">100</span>
+            </div>
+
+            <div id="timer" class="timer safe">
+                60:00
+            </div>
+
+        </div>
+
+        <div class="progress-container">
+            <div id="progressBar" class="progress-bar"></div>
+        </div>
+
+        <div id="questionText" class="question"></div>
+
+        <div id="optionsContainer" class="options"></div>
+
+        <div class="navigation">
+
+            <button
+                id="previousBtn"
+                class="btn btn-secondary"
+                onclick="previousQuestion()">
+                ← Previous
+            </button>
+
+            <button
+                id="nextBtn"
+                class="btn btn-primary"
+                onclick="nextQuestion()">
+                Next →
+            </button>
+
+            <button
+                id="finishBtn"
+                class="btn btn-danger"
+                onclick="confirmFinish()"
+                style="display:none;">
+                Finish Examination
+            </button>
+
+        </div>
+
+        <div id="questionMap" class="question-map"></div>
+
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="resultScreen" class="card">
+
+        <div class="result-box">
+
+            <h2>Examination Result</h2>
+
+            <div class="score-circle">
+                <strong id="percentage">0%</strong>
+                <span>Score</span>
+            </div>
+
+            <div id="resultMessage" class="result-message"></div>
+
+            <div class="result-details">
+
+                <div class="result-stat">
+                    <strong id="correctCount">0</strong>
+                    <span>Correct</span>
+                </div>
+
+                <div class="result-stat">
+                    <strong id="wrongCount">0</strong>
+                    <span>Wrong</span>
+                </div>
+
+                <div class="result-stat">
+                    <strong id="unansweredCount">0</strong>
+                    <span>Unanswered</span>
+                </div>
+
+            </div>
+
+            <div class="result-buttons">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="toggleReview()">
+                    Review Answers
+                </button>
+
+                <button
+                    class="btn btn-warning"
+                    onclick="toggleAnswerKey()">
+                    Answer Key
+                </button>
+
+                <button
+                    class="btn btn-success"
+                    onclick="restartQuiz()">
+                    Restart Quiz
+                </button>
+
+            </div>
+
+            <div id="reviewContainer"></div>
+
+            <div id="answerKeyContainer">
+                <h3 style="margin: 25px 0 15px;">
+                    Answer Key
+                </h3>
+
+                <div id="answerKeyGrid" class="answer-key-grid"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        © 2026 Magarsa S. All Rights Reserved.
+        <br>
+        Security & Networking Online Quiz
+    </footer>
+
+</div>
+
+<script>
+
+/* =========================================================
+   QUIZ CONFIGURATION
+   ========================================================= */
+
+const QUIZ_TIME_MINUTES = 60;
+
+
+/* =========================================================
+   QUESTIONS
+   ========================================================= */
+
+const questions = [
+
+{
+    question: "What does IP stand for?",
+    options: [
+        "Internet Protocol",
+        "Internal Program",
+        "Internet Process",
+        "Information Protocol"
+    ],
+    answer: 0,
+    explanation: "IP stands for Internet Protocol. It is responsible for addressing and routing packets across networks."
+},
+
+{
+    question: "Which device forwards packets between different networks?",
+    options: [
+        "Switch",
+        "Router",
+        "Hub",
+        "Repeater"
+    ],
+    answer: 1,
+    explanation: "A router connects different networks and forwards packets based on IP addresses."
+},
+
+{
+    question: "Which protocol is commonly used to securely browse websites?",
+    options: [
+        "HTTP",
+        "FTP",
+        "HTTPS",
+        "SMTP"
+    ],
+    answer: 2,
+    explanation: "HTTPS uses TLS encryption to protect communication between the browser and web server."
+},
+
+{
+    question: "What is the default port for HTTPS?",
+    options: [
+        "21",
+        "22",
+        "80",
+        "443"
+    ],
+    answer: 3,
+    explanation: "HTTPS normally uses TCP port 443."
+},
+
+{
+    question: "What is a firewall primarily used for?",
+    options: [
+        "Creating passwords",
+        "Filtering network traffic",
+        "Increasing monitor resolution",
+        "Compressing files"
+    ],
+    answer: 1,
+    explanation: "A firewall filters network traffic according to security rules."
+},
+
+{
+    question: "What does DNS stand for?",
+    options: [
+        "Domain Name System",
+        "Digital Network Service",
+        "Data Name Server",
+        "Domain Network Security"
+    ],
+    answer: 0,
+    explanation: "DNS translates domain names such as example.com into IP addresses."
+},
+
+{
+    question: "Which protocol automatically assigns IP addresses to devices?",
+    options: [
+        "DNS",
+        "DHCP",
+        "FTP",
+        "SSH"
+    ],
+    answer: 1,
+    explanation: "DHCP automatically provides devices with network configuration information including IP addresses."
+},
+
+{
+    question: "Which protocol is commonly used for secure remote administration?",
+    options: [
+        "SSH",
+        "HTTP",
+        "FTP",
+        "POP3"
+    ],
+    answer: 0,
+    explanation: "SSH provides encrypted remote access and administration."
+},
+
+{
+    question: "What is phishing?",
+    options: [
+        "A hardware failure",
+        "A social engineering attack",
+        "A routing protocol",
+        "A backup method"
+    ],
+    answer: 1,
+    explanation: "Phishing attempts to trick people into revealing sensitive information or performing unsafe actions."
+},
+
+{
+    question: "Which malware can replicate itself across networks?",
+    options: [
+        "Worm",
+        "Spyware",
+        "Adware",
+        "Rootkit"
+    ],
+    answer: 0,
+    explanation: "A worm is malware capable of self-replication and spreading between systems."
+},
+
+{
+    question: "What is ransomware?",
+    options: [
+        "A network cable",
+        "Malware that demands payment",
+        "A routing protocol",
+        "A password manager"
+    ],
+    answer: 1,
+    explanation: "Ransomware typically encrypts or locks access to data and demands payment."
+},
+
+{
+    question: "Which technology encrypts data in transit on many modern websites?",
+    options: [
+        "TLS",
+        "DHCP",
+        "ARP",
+        "ICMP"
+    ],
+    answer: 0,
+    explanation: "TLS provides encryption and authentication for secure communications."
+},
+
+{
+    question: "What is the purpose of authentication?",
+    options: [
+        "Determine who a user is",
+        "Increase bandwidth",
+        "Assign an IP address",
+        "Compress traffic"
+    ],
+    answer: 0,
+    explanation: "Authentication verifies the identity of a user, device, or service."
+},
+
+{
+    question: "What does authorization determine?",
+    options: [
+        "Who a user is",
+        "What an authenticated user can access",
+        "The IP address",
+        "The MAC address"
+    ],
+    answer: 1,
+    explanation: "Authorization determines which resources or actions an authenticated identity is permitted to access."
+},
+
+{
+    question: "Which is an example of multi-factor authentication?",
+    options: [
+        "Username only",
+        "Password only",
+        "Password plus one-time code",
+        "PIN only"
+    ],
+    answer: 2,
+    explanation: "MFA combines multiple authentication factors, such as a password and a one-time code."
+},
+
+{
+    question: "What is a VPN?",
+    options: [
+        "Virtual Private Network",
+        "Verified Public Network",
+        "Virtual Protected Node",
+        "Variable Private Node"
+    ],
+    answer: 0,
+    explanation: "VPN stands for Virtual Private Network."
+},
+
+{
+    question: "Which attack attempts to overwhelm a service with traffic?",
+    options: [
+        "DDoS",
+        "Phishing",
+        "Brute force",
+        "Shoulder surfing"
+    ],
+    answer: 0,
+    explanation: "DDoS attacks attempt to make services unavailable by overwhelming them with traffic or requests."
+},
+
+{
+    question: "What does CIA mean in information security?",
+    options: [
+        "Confidentiality, Integrity, Availability",
+        "Control, Internet, Authentication",
+        "Cybersecurity, Internet, Access",
+        "Confidentiality, Internet, Authorization"
+    ],
+    answer: 0,
+    explanation: "The CIA triad represents Confidentiality, Integrity and Availability."
+},
+
+{
+    question: "Which security principle ensures data is not changed without authorization?",
+    options: [
+        "Availability",
+        "Integrity",
+        "Confidentiality",
+        "Authentication"
+    ],
+    answer: 1,
+    explanation: "Integrity protects information against unauthorized alteration."
+},
+
+{
+    question: "Which security principle protects information from unauthorized disclosure?",
+    options: [
+        "Integrity",
+        "Availability",
+        "Confidentiality",
+        "Routing"
+    ],
+    answer: 2,
+    explanation: "Confidentiality ensures information is accessible only to authorized parties."
+},
+
+{
+    question: "What is the purpose of antivirus software?",
+    options: [
+        "Detect and remove malicious software",
+        "Increase internet speed",
+        "Assign IP addresses",
+        "Create VLANs"
+    ],
+    answer: 0,
+    explanation: "Antivirus software helps detect, prevent and remove malware."
+},
+
+{
+    question: "Which command is commonly used to test network reachability?",
+    options: [
+        "ping",
+        "copy",
+        "mkdir",
+        "format"
+    ],
+    answer: 0,
+    explanation: "Ping uses ICMP echo requests to test whether a destination is reachable."
+},
+
+{
+    question: "Which protocol is used by ping?",
+    options: [
+        "TCP",
+        "UDP",
+        "ICMP",
+        "FTP"
+    ],
+    answer: 2,
+    explanation: "Ping normally uses ICMP Echo Request and Echo Reply messages."
+},
+
+{
+    question: "What does MAC address identify?",
+    options: [
+        "A network interface",
+        "A website",
+        "A user password",
+        "A domain"
+    ],
+    answer: 0,
+    explanation: "A MAC address identifies a network interface at the data-link layer."
+},
+
+{
+    question: "Which OSI layer is responsible for routing?",
+    options: [
+        "Physical",
+        "Data Link",
+        "Network",
+        "Application"
+    ],
+    answer: 2,
+    explanation: "The OSI Network layer is responsible for logical addressing and routing."
+},
+
+{
+    question: "Which OSI layer uses MAC addresses?",
+    options: [
+        "Physical",
+        "Data Link",
+        "Network",
+        "Transport"
+    ],
+    answer: 1,
+    explanation: "MAC addressing is associated with the Data Link layer."
+},
+
+{
+    question: "Which device operates primarily at OSI Layer 2?",
+    options: [
+        "Router",
+        "Switch",
+        "Gateway",
+        "Firewall"
+    ],
+    answer: 1,
+    explanation: "Traditional Ethernet switches primarily operate at Layer 2."
+},
+
+{
+    question: "Which protocol is connection-oriented?",
+    options: [
+        "UDP",
+        "TCP",
+        "ICMP",
+        "ARP"
+    ],
+    answer: 1,
+    explanation: "TCP establishes a connection before transmitting application data."
+},
+
+{
+    question: "Which protocol is connectionless?",
+    options: [
+        "TCP",
+        "SSH",
+        "UDP",
+        "HTTPS"
+    ],
+    answer: 2,
+    explanation: "UDP is a connectionless transport protocol."
+},
+
+{
+    question: "What is the purpose of a subnet mask?",
+    options: [
+        "Identify network and host portions of an IP address",
+        "Encrypt traffic",
+        "Create passwords",
+        "Resolve domain names"
+    ],
+    answer: 0,
+    explanation: "A subnet mask separates the network portion from the host portion of an IPv4 address."
+},
+
+{
+    question: "Which IPv4 address is a private address?",
+    options: [
+        "8.8.8.8",
+        "192.168.1.10",
+        "1.1.1.1",
+        "142.250.1.1"
+    ],
+    answer: 1,
+    explanation: "192.168.0.0/16 is one of the private IPv4 address ranges."
+},
+
+{
+    question: "Which range is private IPv4 addressing?",
+    options: [
+        "10.0.0.0/8",
+        "11.0.0.0/8",
+        "12.0.0.0/8",
+        "13.0.0.0/8"
+    ],
+    answer: 0,
+    explanation: "10.0.0.0/8 is a private IPv4 address range."
+},
+
+{
+    question: "What does NAT do?",
+    options: [
+        "Translates network addresses",
+        "Encrypts files",
+        "Detects viruses",
+        "Creates passwords"
+    ],
+    answer: 0,
+    explanation: "NAT translates addresses between different network addressing domains."
+},
+
+{
+    question: "What is a VLAN?",
+    options: [
+        "Virtual Local Area Network",
+        "Verified Local Access Node",
+        "Virtual Login Access Network",
+        "Variable LAN"
+    ],
+    answer: 0,
+    explanation: "VLAN stands for Virtual Local Area Network."
+},
+
+{
+    question: "Why are VLANs commonly used?",
+    options: [
+        "To logically separate network traffic",
+        "To increase monitor brightness",
+        "To remove malware",
+        "To create passwords"
+    ],
+    answer: 0,
+    explanation: "VLANs provide logical network segmentation."
+},
+
+{
+    question: "What is network segmentation?",
+    options: [
+        "Dividing a network into smaller security or operational zones",
+        "Deleting network devices",
+        "Increasing disk capacity",
+        "Changing a password"
+    ],
+    answer: 0,
+    explanation: "Segmentation divides networks into separate zones to improve security and management."
+},
+
+{
+    question: "What is a brute-force attack?",
+    options: [
+        "Trying many possible passwords",
+        "Changing a MAC address",
+        "Blocking a port",
+        "Scanning a cable"
+    ],
+    answer: 0,
+    explanation: "Brute-force attacks systematically try many possible credentials."
+},
+
+{
+    question: "Which is a strong password?",
+    options: [
+        "password123",
+        "12345678",
+        "Magarsa",
+        "A long unique passphrase with varied characters"
+    ],
+    answer: 3,
+    explanation: "Long, unique passwords or passphrases are generally stronger and harder to guess."
+},
+
+{
+    question: "What is password hashing?",
+    options: [
+        "Converting a password into a one-way representation",
+        "Sending a password by email",
+        "Deleting a password",
+        "Printing a password"
+    ],
+    answer: 0,
+    explanation: "Password hashing creates a one-way representation that can be used for secure password verification."
+},
+
+{
+    question: "Which is preferable for storing passwords?",
+    options: [
+        "Plain text",
+        "Reversible encryption only",
+        "A strong password hashing algorithm",
+        "A screenshot"
+    ],
+    answer: 2,
+    explanation: "Passwords should normally be stored using a strong password hashing scheme."
+},
+
+{
+    question: "What is social engineering?",
+    options: [
+        "Manipulating people to obtain information or access",
+        "Building a switch",
+        "Creating VLANs",
+        "Routing packets"
+    ],
+    answer: 0,
+    explanation: "Social engineering exploits human behavior rather than only technical vulnerabilities."
+},
+
+{
+    question: "What is spear phishing?",
+    options: [
+        "A targeted phishing attack",
+        "A type of firewall",
+        "A network cable",
+        "A backup method"
+    ],
+    answer: 0,
+    explanation: "Spear phishing is phishing targeted at a specific person or organization."
+},
+
+{
+    question: "What is malware?",
+    options: [
+        "Malicious software",
+        "Network hardware",
+        "A database",
+        "A routing table"
+    ],
+    answer: 0,
+    explanation: "Malware is software designed to harm, exploit, disrupt or gain unauthorized access."
+},
+
+{
+    question: "Which malware records user activity or information?",
+    options: [
+        "Spyware",
+        "Switchware",
+        "Firmware",
+        "Driver"
+    ],
+    answer: 0,
+    explanation: "Spyware is designed to monitor activity or collect information without proper authorization."
+},
+
+{
+    question: "What is a Trojan horse?",
+    options: [
+        "Malware disguised as legitimate software",
+        "A routing protocol",
+        "An encryption algorithm",
+        "A network switch"
+    ],
+    answer: 0,
+    explanation: "A Trojan disguises malicious functionality as legitimate software or files."
+},
+
+{
+    question: "What is a rootkit?",
+    options: [
+        "Malware designed to hide privileged access or malicious activity",
+        "A network cable",
+        "A backup system",
+        "A DNS server"
+    ],
+    answer: 0,
+    explanation: "Rootkits are designed to maintain privileged access and hide their presence."
+},
+
+{
+    question: "What is an IDS?",
+    options: [
+        "Intrusion Detection System",
+        "Internet Data Switch",
+        "Internal Domain Server",
+        "IP Detection Service"
+    ],
+    answer: 0,
+    explanation: "An IDS monitors activity for suspicious or malicious behavior."
+},
+
+{
+    question: "What is an IPS?",
+    options: [
+        "Intrusion Prevention System",
+        "Internet Protocol Service",
+        "Internal Password System",
+        "IP Protection Server"
+    ],
+    answer: 0,
+    explanation: "An IPS can detect suspicious activity and take action to block or prevent it."
+},
+
+{
+    question: "What is SIEM?",
+    options: [
+        "Security Information and Event Management",
+        "Secure Internet Email Management",
+        "System IP Encryption Method",
+        "Security Internet Endpoint Machine"
+    ],
+    answer: 0,
+    explanation: "SIEM systems collect, correlate and analyze security-related logs and events."
+},
+
+{
+    question: "What is a security vulnerability?",
+    options: [
+        "A weakness that can potentially be exploited",
+        "A strong password",
+        "A firewall rule",
+        "A network cable"
+    ],
+    answer: 0,
+    explanation: "A vulnerability is a weakness that may be exploited by a threat."
+},
+
+{
+    question: "What is a security patch?",
+    options: [
+        "An update that fixes vulnerabilities or bugs",
+        "A network cable",
+        "A password",
+        "A router"
+    ],
+    answer: 0,
+    explanation: "Security patches fix vulnerabilities and improve software security."
+},
+
+{
+    question: "Why is patch management important?",
+    options: [
+        "To reduce exposure to known vulnerabilities",
+        "To increase screen size",
+        "To change keyboard layout",
+        "To remove Ethernet"
+    ],
+    answer: 0,
+    explanation: "Timely patching reduces the window in which known vulnerabilities can be exploited."
+},
+
+{
+    question: "What is least privilege?",
+    options: [
+        "Giving users only the access they need",
+        "Giving everyone administrator access",
+        "Removing all passwords",
+        "Allowing unrestricted network access"
+    ],
+    answer: 0,
+    explanation: "Least privilege limits permissions to the minimum necessary for a task."
+},
+
+{
+    question: "What is defense in depth?",
+    options: [
+        "Using multiple layers of security controls",
+        "Using one firewall only",
+        "Removing authentication",
+        "Using no passwords"
+    ],
+    answer: 0,
+    explanation: "Defense in depth uses multiple security layers so one failed control does not expose everything."
+},
+
+{
+    question: "What is zero trust?",
+    options: [
+        "Never automatically trust; continuously verify access",
+        "Trust every internal device",
+        "Disable authentication",
+        "Allow anonymous administration"
+    ],
+    answer: 0,
+    explanation: "Zero Trust assumes no implicit trust and emphasizes continuous verification."
+},
+
+{
+    question: "What is encryption?",
+    options: [
+        "Transforming readable data into protected ciphertext",
+        "Deleting data",
+        "Compressing a disk",
+        "Assigning an IP address"
+    ],
+    answer: 0,
+    explanation: "Encryption transforms plaintext into ciphertext to protect confidentiality."
+},
+
+{
+    question: "What is decryption?",
+    options: [
+        "Converting ciphertext back into readable data",
+        "Creating a VLAN",
+        "Changing an IP address",
+        "Blocking a port"
+    ],
+    answer: 0,
+    explanation: "Decryption converts encrypted ciphertext back into plaintext."
+},
+
+{
+    question: "Which is an example of symmetric encryption?",
+    options: [
+        "AES",
+        "RSA",
+        "DHCP",
+        "DNS"
+    ],
+    answer: 0,
+    explanation: "AES is a symmetric encryption algorithm."
+},
+
+{
+    question: "Which is an asymmetric cryptographic algorithm?",
+    options: [
+        "AES",
+        "RSA",
+        "CRC",
+        "MD5"
+    ],
+    answer: 1,
+    explanation: "RSA is a public-key/asymmetric cryptographic algorithm."
+},
+
+{
+    question: "What is a digital certificate used for?",
+    options: [
+        "Binding an identity to a public key",
+        "Increasing RAM",
+        "Creating VLANs",
+        "Assigning DHCP addresses"
+    ],
+    answer: 0,
+    explanation: "Digital certificates help establish identity and associate identities with public keys."
+},
+
+{
+    question: "What does PKI stand for?",
+    options: [
+        "Public Key Infrastructure",
+        "Private Key Internet",
+        "Protected Key Interface",
+        "Public Kernel Internet"
+    ],
+    answer: 0,
+    explanation: "PKI is Public Key Infrastructure."
+},
+
+{
+    question: "What is a digital signature primarily used for?",
+    options: [
+        "Authenticity and integrity",
+        "Increasing bandwidth",
+        "Assigning IP addresses",
+        "Creating VLANs"
+    ],
+    answer: 0,
+    explanation: "Digital signatures help verify authenticity and detect unauthorized modification."
+},
+
+{
+    question: "What is a hash function commonly used for?",
+    options: [
+        "Integrity verification",
+        "Routing packets",
+        "Assigning IP addresses",
+        "Creating cables"
+    ],
+    answer: 0,
+    explanation: "Cryptographic hashes can be used to detect changes to data."
+},
+
+{
+    question: "Which protocol resolves an IPv4 address to a MAC address on a local network?",
+    options: [
+        "ARP",
+        "DNS",
+        "DHCP",
+        "HTTP"
+    ],
+    answer: 0,
+    explanation: "ARP maps IPv4 addresses to MAC addresses on local networks."
+},
+
+{
+    question: "What does FTP stand for?",
+    options: [
+        "File Transfer Protocol",
+        "Fast Transmission Process",
+        "File Transport Program",
+        "Firewall Transfer Protocol"
+    ],
+    answer: 0,
+    explanation: "FTP stands for File Transfer Protocol."
+},
+
+{
+    question: "Which protocol is commonly used to send email?",
+    options: [
+        "SMTP",
+        "POP3",
+        "DNS",
+        "ARP"
+    ],
+    answer: 0,
+    explanation: "SMTP is commonly used for sending email."
+},
+
+{
+    question: "Which protocol is commonly used to retrieve email from a server?",
+    options: [
+        "SMTP",
+        "POP3",
+        "ARP",
+        "ICMP"
+    ],
+    answer: 1,
+    explanation: "POP3 is a protocol used to retrieve email from a mail server."
+},
+
+{
+    question: "Which protocol can synchronize email across multiple devices?",
+    options: [
+        "IMAP",
+        "ARP",
+        "ICMP",
+        "FTP"
+    ],
+    answer: 0,
+    explanation: "IMAP keeps messages on the server and synchronizes mailbox state across clients."
+},
+
+{
+    question: "What is the default port for HTTP?",
+    options: [
+        "20",
+        "21",
+        "80",
+        "443"
+    ],
+    answer: 2,
+    explanation: "HTTP normally uses TCP port 80."
+},
+
+{
+    question: "What is the default port for SSH?",
+    options: [
+        "22",
+        "23",
+        "25",
+        "53"
+    ],
+    answer: 0,
+    explanation: "SSH normally uses TCP port 22."
+},
+
+{
+    question: "What is the default port for DNS queries?",
+    options: [
+        "25",
+        "53",
+        "80",
+        "110"
+    ],
+    answer: 1,
+    explanation: "DNS commonly uses port 53."
+},
+
+{
+    question: "Which protocol is insecure because it sends credentials without encryption by default?",
+    options: [
+        "Telnet",
+        "SSH",
+        "HTTPS",
+        "TLS"
+    ],
+    answer: 0,
+    explanation: "Telnet does not provide encrypted communication by default."
+},
+
+{
+    question: "What is a port scan?",
+    options: [
+        "Checking network ports to identify available services",
+        "Encrypting a disk",
+        "Changing a password",
+        "Backing up files"
+    ],
+    answer: 0,
+    explanation: "Port scanning checks which ports are open or accessible on a system."
+},
+
+{
+    question: "What is vulnerability scanning?",
+    options: [
+        "Searching systems for known security weaknesses",
+        "Installing a keyboard",
+        "Changing monitor resolution",
+        "Creating a website"
+    ],
+    answer: 0,
+    explanation: "Vulnerability scanners identify known weaknesses and configuration problems."
+},
+
+{
+    question: "What is penetration testing?",
+    options: [
+        "Authorized security testing that attempts to identify exploitable weaknesses",
+        "Deleting user accounts",
+        "Installing printers",
+        "Changing DNS"
+    ],
+    answer: 0,
+    explanation: "Penetration testing is authorized security testing designed to identify and demonstrate exploitable weaknesses."
+},
+
+{
+    question: "What is an exploit?",
+    options: [
+        "A method or code that takes advantage of a vulnerability",
+        "A backup",
+        "A firewall",
+        "A password policy"
+    ],
+    answer: 0,
+    explanation: "An exploit is a technique or code that takes advantage of a vulnerability."
+},
+
+{
+    question: "What is a zero-day vulnerability?",
+    options: [
+        "A vulnerability unknown or without an available fix at the time of exploitation",
+        "A password older than one day",
+        "A network cable",
+        "A firewall rule"
+    ],
+    answer: 0,
+    explanation: "A zero-day vulnerability is generally a newly discovered vulnerability for which defenders may not yet have an effective patch."
+},
+
+{
+    question: "What is a botnet?",
+    options: [
+        "A network of compromised devices controlled by an attacker",
+        "A secure VPN",
+        "A firewall",
+        "A password manager"
+    ],
+    answer: 0,
+    explanation: "A botnet consists of compromised devices controlled as a group."
+},
+
+{
+    question: "What is command injection?",
+    options: [
+        "Injecting malicious commands into an application or system command interface",
+        "Creating a VLAN",
+        "Changing a cable",
+        "Encrypting email"
+    ],
+    answer: 0,
+    explanation: "Command injection occurs when untrusted input causes unintended operating-system commands to execute."
+},
+
+{
+    question: "What is SQL injection?",
+    options: [
+        "Injecting malicious SQL into an application query",
+        "Changing a router",
+        "Scanning Wi-Fi",
+        "Encrypting a database"
+    ],
+    answer: 0,
+    explanation: "SQL injection exploits unsafe handling of input in database queries."
+},
+
+{
+    question: "Which practice helps prevent SQL injection?",
+    options: [
+        "Parameterized queries",
+        "Using default passwords",
+        "Disabling authentication",
+        "Sharing database credentials"
+    ],
+    answer: 0,
+    explanation: "Parameterized queries separate SQL code from user-provided data."
+},
+
+{
+    question: "What is cross-site scripting (XSS)?",
+    options: [
+        "Injecting malicious script into web content viewed by users",
+        "Scanning a router",
+        "Changing a MAC address",
+        "Creating a VPN"
+    ],
+    answer: 0,
+    explanation: "XSS allows malicious scripts to execute in a user's browser through vulnerable web content."
+},
+
+{
+    question: "What is CSRF?",
+    options: [
+        "Cross-Site Request Forgery",
+        "Central Security Routing Framework",
+        "Cyber System Response Function",
+        "Computer Secure Request Firewall"
+    ],
+    answer: 0,
+    explanation: "CSRF tricks an authenticated user's browser into sending an unintended request."
+},
+
+{
+    question: "Which control helps protect against CSRF?",
+    options: [
+        "CSRF tokens",
+        "Disabling passwords",
+        "Using hubs",
+        "Removing logs"
+    ],
+    answer: 0,
+    explanation: "CSRF tokens help ensure requests originate from legitimate application forms or sessions."
+},
+
+{
+    question: "What is session hijacking?",
+    options: [
+        "Taking control of a user's authenticated session",
+        "Replacing a network switch",
+        "Changing DNS records",
+        "Creating a VLAN"
+    ],
+    answer: 0,
+    explanation: "Session hijacking occurs when an attacker obtains or abuses a valid session identifier."
+},
+
+{
+    question: "What is a security log?",
+    options: [
+        "A record of security-related events",
+        "A network cable",
+        "A password",
+        "A router"
+    ],
+    answer: 0,
+    explanation: "Security logs record events useful for monitoring, investigation and auditing."
+},
+
+{
+    question: "Why is centralized logging useful?",
+    options: [
+        "It makes security monitoring and correlation easier",
+        "It increases CPU speed",
+        "It replaces passwords",
+        "It disables firewalls"
+    ],
+    answer: 0,
+    explanation: "Centralized logs make it easier to correlate and investigate events across systems."
+},
+
+{
+    question: "What is incident response?",
+    options: [
+        "The process of handling and recovering from security incidents",
+        "Installing monitors",
+        "Changing keyboard settings",
+        "Creating websites"
+    ],
+    answer: 0,
+    explanation: "Incident response involves preparing for, detecting, containing, investigating and recovering from incidents."
+},
+
+{
+    question: "What is a security incident?",
+    options: [
+        "An event that may compromise confidentiality, integrity or availability",
+        "A normal software update",
+        "A keyboard shortcut",
+        "A network cable"
+    ],
+    answer: 0,
+    explanation: "A security incident is an event that threatens or compromises information or systems."
+},
+
+{
+    question: "What is a backup?",
+    options: [
+        "A copy of data kept for recovery",
+        "A firewall",
+        "A password",
+        "A network switch"
+    ],
+    answer: 0,
+    explanation: "Backups provide recoverable copies of data."
+},
+
+{
+    question: "Why are offline backups useful against ransomware?",
+    options: [
+        "They can remain inaccessible to the attacker",
+        "They increase internet speed",
+        "They disable malware automatically",
+        "They remove the need for passwords"
+    ],
+    answer: 0,
+    explanation: "Offline or otherwise isolated backups are harder for ransomware to encrypt or destroy."
+},
+
+{
+    question: "What is disaster recovery?",
+    options: [
+        "Restoring IT services after a disruptive event",
+        "Changing a password",
+        "Creating a VLAN",
+        "Installing antivirus"
+    ],
+    answer: 0,
+    explanation: "Disaster recovery focuses on restoring systems and services after major disruptions."
+},
+
+{
+    question: "What is business continuity?",
+    options: [
+        "Keeping important business operations functioning during disruption",
+        "Changing IP addresses",
+        "Installing switches",
+        "Creating passwords"
+    ],
+    answer: 0,
+    explanation: "Business continuity focuses on maintaining essential operations during and after disruptions."
+},
+
+{
+    question: "What is Wi-Fi?",
+    options: [
+        "Wireless networking technology",
+        "A type of database",
+        "An antivirus program",
+        "A programming language"
+    ],
+    answer: 0,
+    explanation: "Wi-Fi is a family of wireless networking technologies based on IEEE 802.11."
+},
+
+{
+    question: "Which security method is generally stronger for modern Wi-Fi networks?",
+    options: [
+        "WEP",
+        "WPA2/WPA3",
+        "Open network",
+        "No authentication"
+    ],
+    answer: 1,
+    explanation: "WPA2 and WPA3 provide substantially stronger security than legacy WEP."
+},
+
+{
+    question: "What is an evil twin attack?",
+    options: [
+        "A fake Wi-Fi access point designed to imitate a legitimate one",
+        "A firewall failure",
+        "A password reset",
+        "A DNS server"
+    ],
+    answer: 0,
+    explanation: "An evil twin is a rogue wireless network designed to appear legitimate."
+},
+
+{
+    question: "What is endpoint security?",
+    options: [
+        "Protecting computers, phones and other end-user devices",
+        "Protecting only cables",
+        "Changing DNS",
+        "Managing printers only"
+    ],
+    answer: 0,
+    explanation: "Endpoint security protects devices such as computers, laptops and mobile devices."
+},
+
+{
+    question: "What is application security?",
+    options: [
+        "Protecting software applications from vulnerabilities and attacks",
+        "Changing monitor settings",
+        "Replacing network cables",
+        "Creating VLANs"
+    ],
+    answer: 0,
+    explanation: "Application security involves designing, developing and operating software securely."
+},
+
+{
+    question: "What is cloud security?",
+    options: [
+        "Protecting cloud systems, data and services",
+        "Protecting only Wi-Fi",
+        "Installing Ethernet cables",
+        "Changing passwords only"
+    ],
+    answer: 0,
+    explanation: "Cloud security addresses protection of cloud-hosted infrastructure, applications and data."
+},
+
+{
+    question: "What is access control?",
+    options: [
+        "Controlling who or what can access resources",
+        "Increasing network speed",
+        "Changing screen resolution",
+        "Deleting logs"
+    ],
+    answer: 0,
+    explanation: "Access control restricts access to resources according to policies and permissions."
+},
+
+{
+    question: "What is role-based access control?",
+    options: [
+        "Assigning permissions according to roles",
+        "Giving every user administrator access",
+        "Using only passwords",
+        "Disabling authentication"
+    ],
+    answer: 0,
+    explanation: "RBAC grants permissions based on defined organizational roles."
+},
+
+{
+    question: "What is an access control list (ACL)?",
+    options: [
+        "A set of rules controlling access or traffic",
+        "A password database",
+        "A type of malware",
+        "A Wi-Fi antenna"
+    ],
+    answer: 0,
+    explanation: "ACLs contain rules that permit or deny specified traffic or access."
+},
+
+{
+    question: "What is a proxy server?",
+    options: [
+        "A server that acts as an intermediary for requests",
+        "A network cable",
+        "An antivirus database",
+        "A password"
+    ],
+    answer: 0,
+    explanation: "A proxy acts as an intermediary between clients and destination services."
+},
+
+{
+    question: "What is a DMZ in network security?",
+    options: [
+        "A separate network zone for publicly accessible services",
+        "A password policy",
+        "A type of malware",
+        "A backup disk"
+    ],
+    answer: 0,
+    explanation: "A DMZ isolates public-facing services from more trusted internal networks."
+},
+
+{
+    question: "What is network monitoring?",
+    options: [
+        "Observing network performance, traffic and security events",
+        "Deleting network logs",
+        "Changing passwords",
+        "Installing keyboards"
+    ],
+    answer: 0,
+    explanation: "Network monitoring provides visibility into network performance, availability and security."
+},
+
+{
+    question: "Which tool commonly displays network connections and listening ports?",
+    options: [
+        "netstat",
+        "mkdir",
+        "echo",
+        "format"
+    ],
+    answer: 0,
+    explanation: "netstat and similar tools can display active connections and listening ports."
+},
+
+{
+    question: "What does traceroute help identify?",
+    options: [
+        "The path packets take toward a destination",
+        "A user's password",
+        "A malware signature",
+        "A file's contents"
+    ],
+    answer: 0,
+    explanation: "Traceroute displays intermediate network hops toward a destination."
+},
+
+{
+    question: "What is packet sniffing?",
+    options: [
+        "Capturing and analyzing network packets",
+        "Changing passwords",
+        "Deleting files",
+        "Creating users"
+    ],
+    answer: 0,
+    explanation: "Packet sniffing captures network traffic for analysis."
+},
+
+{
+    question: "Why is encryption important on public Wi-Fi?",
+    options: [
+        "It helps protect data from interception",
+        "It increases screen brightness",
+        "It prevents all malware",
+        "It assigns IP addresses"
+    ],
+    answer: 0,
+    explanation: "Encryption helps protect transmitted information from being read by unauthorized parties."
+},
+
+{
+    question: "What is data loss prevention (DLP)?",
+    options: [
+        "Technology and policies designed to prevent unauthorized data disclosure",
+        "A routing protocol",
+        "A network cable",
+        "A password manager"
+    ],
+    answer: 0,
+    explanation: "DLP helps detect and prevent unauthorized movement or disclosure of sensitive information."
+},
+
+{
+    question: "What is data classification?",
+    options: [
+        "Categorizing information according to sensitivity or importance",
+        "Encrypting every packet",
+        "Changing IP addresses",
+        "Installing firewalls"
+    ],
+    answer: 0,
+    explanation: "Data classification identifies the sensitivity and handling requirements of information."
+},
+
+{
+    question: "What is a security policy?",
+    options: [
+        "A documented set of security rules and requirements",
+        "A network cable",
+        "A type of malware",
+        "A DNS record"
+    ],
+    answer: 0,
+    explanation: "Security policies define organizational requirements and expectations for protecting systems and data."
+},
+
+{
+    question: "What is security awareness training?",
+    options: [
+        "Teaching users how to recognize and avoid security risks",
+        "Installing switches",
+        "Changing IP addresses",
+        "Creating VLANs"
+    ],
+    answer: 0,
+    explanation: "Security awareness training helps users recognize threats such as phishing and unsafe behavior."
+},
+
+{
+    question: "What is the principle of separation of duties?",
+    options: [
+        "Dividing critical responsibilities among multiple people",
+        "Giving one person complete control",
+        "Removing authentication",
+        "Sharing passwords"
+    ],
+    answer: 0,
+    explanation: "Separation of duties reduces the risk of fraud or abuse by dividing sensitive responsibilities."
+},
+
+{
+    question: "What is non-repudiation?",
+    options: [
+        "Providing evidence that an action or transaction occurred and cannot easily be denied",
+        "Increasing bandwidth",
+        "Changing IP addresses",
+        "Blocking all ports"
+    ],
+    answer: 0,
+    explanation: "Non-repudiation helps provide evidence about who performed an action or sent information."
+},
+
+{
+    question: "Which is an example of something you have for authentication?",
+    options: [
+        "Password",
+        "Security token",
+        "Fingerprint",
+        "Username"
+    ],
+    answer: 1,
+    explanation: "A physical security token is an example of a possession factor: something you have."
+},
+
+{
+    question: "Which is an example of something you are for authentication?",
+    options: [
+        "Password",
+        "Smart card",
+        "Fingerprint",
+        "PIN"
+    ],
+    answer: 2,
+    explanation: "Biometrics such as fingerprints are examples of an inherence factor: something you are."
+},
+
+{
+    question: "What is a security token?",
+    options: [
+        "A device or software mechanism used as an authentication factor",
+        "A network cable",
+        "A firewall",
+        "A router"
+    ],
+    answer: 0,
+    explanation: "Security tokens can provide a possession factor for authentication."
+},
+
+{
+    question: "What is account lockout?",
+    options: [
+        "Temporarily disabling an account after repeated failed authentication attempts",
+        "Deleting all accounts",
+        "Removing passwords",
+        "Changing an IP address"
+    ],
+    answer: 0,
+    explanation: "Account lockout can help reduce repeated password-guessing attempts."
+},
+
+{
+    question: "Why should default administrator passwords be changed?",
+    options: [
+        "Attackers may know or guess default credentials",
+        "It increases screen size",
+        "It changes the MAC address",
+        "It enables DNS"
+    ],
+    answer: 0,
+    explanation: "Default credentials are often publicly known or predictable and should be changed."
+},
+
+{
+    question: "What is a honeypot?",
+    options: [
+        "A system designed to attract and observe suspicious activity",
+        "A backup server",
+        "A router",
+        "A password manager"
+    ],
+    answer: 0,
+    explanation: "A honeypot is a deliberately exposed system used to detect or study suspicious activity."
+},
+
+{
+    question: "What is threat intelligence?",
+    options: [
+        "Information about threats that helps organizations make security decisions",
+        "A network cable",
+        "A password",
+        "A database backup"
+    ],
+    answer: 0,
+    explanation: "Threat intelligence provides information about threats, actors, indicators and tactics."
+},
+
+{
+    question: "What is an indicator of compromise (IOC)?",
+    options: [
+        "Evidence that may indicate a system has been compromised",
+        "A type of switch",
+        "A password",
+        "A VLAN"
+    ],
+    answer: 0,
+    explanation: "IOCs can include suspicious files, IP addresses, domains or system changes associated with compromise."
+},
+
+{
+    question: "What is a security baseline?",
+    options: [
+        "A defined minimum security configuration",
+        "A network cable",
+        "A malware sample",
+        "A password"
+    ],
+    answer: 0,
+    explanation: "A security baseline defines expected secure configuration settings."
+},
+
+{
+    question: "What is hardening?",
+    options: [
+        "Reducing unnecessary services, features and weaknesses in a system",
+        "Installing more malware",
+        "Disabling security controls",
+        "Sharing passwords"
+    ],
+    answer: 0,
+    explanation: "System hardening reduces the attack surface by disabling unnecessary functionality and applying secure configurations."
+},
+
+{
+    question: "What is attack surface?",
+    options: [
+        "The collection of points through which a system could potentially be attacked",
+        "A firewall",
+        "A password",
+        "A network cable"
+    ],
+    answer: 0,
+    explanation: "The attack surface includes exposed interfaces, services, applications and other potential entry points."
+},
+
+{
+    question: "What is risk in cybersecurity?",
+    options: [
+        "The potential for a threat to exploit a vulnerability and cause impact",
+        "A type of network cable",
+        "A password",
+        "A router"
+    ],
+    answer: 0,
+    explanation: "Cybersecurity risk relates to the likelihood and impact of threats exploiting vulnerabilities."
+},
+
+{
+    question: "What is risk assessment?",
+    options: [
+        "Identifying and evaluating security risks",
+        "Creating a VLAN",
+        "Changing DNS",
+        "Installing a printer"
+    ],
+    answer: 0,
+    explanation: "Risk assessment identifies threats, vulnerabilities, likelihood and potential impact."
+},
+
+{
+    question: "What is risk mitigation?",
+    options: [
+        "Taking measures to reduce security risk",
+        "Increasing vulnerabilities",
+        "Removing all backups",
+        "Sharing passwords"
+    ],
+    answer: 0,
+    explanation: "Risk mitigation reduces the likelihood or impact of identified risks."
+},
+
+{
+    question: "What is security auditing?",
+    options: [
+        "Reviewing systems and controls against requirements",
+        "Installing Ethernet cables",
+        "Changing passwords only",
+        "Deleting logs"
+    ],
+    answer: 0,
+    explanation: "Security audits evaluate whether systems and controls meet defined requirements."
+},
+
+{
+    question: "What is compliance?",
+    options: [
+        "Following applicable laws, regulations, standards or policies",
+        "Disabling firewalls",
+        "Removing passwords",
+        "Ignoring security policies"
+    ],
+    answer: 0,
+    explanation: "Compliance means meeting applicable requirements such as laws, regulations, standards or organizational policies."
+},
+
+{
+    question: "Which security control can help limit lateral movement?",
+    options: [
+        "Network segmentation",
+        "Shared passwords",
+        "Open firewall rules",
+        "Disabled authentication"
+    ],
+    answer: 0,
+    explanation: "Network segmentation can limit how easily attackers move between systems."
+},
+
+{
+    question: "What is lateral movement?",
+    options: [
+        "An attacker moving from one compromised system to another",
+        "Changing a password",
+        "Sending email",
+        "Creating a backup"
+    ],
+    answer: 0,
+    explanation: "Lateral movement is an attacker's movement through an environment after gaining an initial foothold."
+},
+
+{
+    question: "What is privilege escalation?",
+    options: [
+        "Gaining higher privileges than originally authorized",
+        "Changing a MAC address",
+        "Creating a VLAN",
+        "Backing up data"
+    ],
+    answer: 0,
+    explanation: "Privilege escalation occurs when an attacker or user gains more permissions than intended."
+},
+
+{
+    question: "What is an insider threat?",
+    options: [
+        "A threat originating from someone with legitimate organizational access",
+        "Only an external hacker",
+        "A firewall",
+        "A router"
+    ],
+    answer: 0,
+    explanation: "Insider threats involve misuse or compromise of legitimate internal access."
+},
+
+{
+    question: "Why should unused accounts be disabled?",
+    options: [
+        "To reduce unnecessary attack opportunities",
+        "To increase bandwidth",
+        "To improve monitor quality",
+        "To enable FTP"
+    ],
+    answer: 0,
+    explanation: "Unused accounts create unnecessary attack surfaces and should generally be disabled."
+},
+
+{
+    question: "What is secure configuration?",
+    options: [
+        "Configuring systems according to security requirements and best practices",
+        "Using default passwords",
+        "Disabling logging",
+        "Allowing all traffic"
+    ],
+    answer: 0,
+    explanation: "Secure configuration applies appropriate security settings and removes unnecessary exposure."
+},
+
+{
+    question: "What is an incident response plan?",
+    options: [
+        "A documented plan for handling security incidents",
+        "A password list",
+        "A network diagram only",
+        "A list of IP addresses"
+    ],
+    answer: 0,
+    explanation: "An incident response plan defines responsibilities and procedures for responding to security incidents."
+},
+
+{
+    question: "What is forensic analysis?",
+    options: [
+        "Examining evidence to understand what happened during an incident",
+        "Creating passwords",
+        "Installing Wi-Fi",
+        "Changing IP addresses"
+    ],
+    answer: 0,
+    explanation: "Digital forensics examines evidence to determine what happened and how an incident occurred."
+},
+
+{
+    question: "Why is preserving evidence important after a security incident?",
+    options: [
+        "It supports investigation and may be needed for legal or disciplinary processes",
+        "It increases network speed",
+        "It removes malware automatically",
+        "It changes passwords"
+    ],
+    answer: 0,
+    explanation: "Proper evidence preservation helps maintain its usefulness for investigations and possible legal processes."
+},
+
+{
+    question: "What is a firewall rule?",
+    options: [
+        "A condition specifying whether network traffic should be allowed or denied",
+        "A password",
+        "A malware signature",
+        "A backup"
+    ],
+    answer: 0,
+    explanation: "Firewall rules define conditions under which traffic is permitted or blocked."
+},
+
+{
+    question: "What is the purpose of a default-deny firewall policy?",
+    options: [
+        "Block traffic unless it is explicitly allowed",
+        "Allow everything",
+        "Disable logging",
+        "Remove authentication"
+    ],
+    answer: 0,
+    explanation: "Default deny blocks traffic unless a rule explicitly permits it."
+},
+
+{
+    question: "What is eavesdropping?",
+    options: [
+        "Unauthorized listening to communications",
+        "Changing a router",
+        "Installing antivirus",
+        "Creating a backup"
+    ],
+    answer: 0,
+    explanation: "Eavesdropping involves intercepting communications without authorization."
+},
+
+{
+    question: "What is spoofing?",
+    options: [
+        "Pretending to be another system, identity or source",
+        "Backing up data",
+        "Encrypting files",
+        "Creating a VLAN"
+    ],
+    answer: 0,
+    explanation: "Spoofing involves falsifying identifying information to impersonate another entity."
+},
+
+{
+    question: "What is IP spoofing?",
+    options: [
+        "Forging the source IP address in network packets",
+        "Changing a password",
+        "Creating a database",
+        "Encrypting a disk"
+    ],
+    answer: 0,
+    explanation: "IP spoofing involves forging the source IP address of packets."
+},
+
+{
+    question: "What is DNS spoofing?",
+    options: [
+        "Providing false DNS information to redirect users",
+        "Changing a MAC address",
+        "Installing a firewall",
+        "Creating a VLAN"
+    ],
+    answer: 0,
+    explanation: "DNS spoofing can cause users to receive fraudulent DNS responses and be redirected."
+},
+
+{
+    question: "What is ARP spoofing?",
+    options: [
+        "Sending forged ARP information to associate an attacker's MAC address with another IP address",
+        "Changing DNS",
+        "Encrypting email",
+        "Creating a backup"
+    ],
+    answer: 0,
+    explanation: "ARP spoofing manipulates ARP mappings on a local network."
+},
+
+{
+    question: "What is a man-in-the-middle attack?",
+    options: [
+        "An attacker intercepts communication between two parties",
+        "A firewall update",
+        "A backup process",
+        "A password policy"
+    ],
+    answer: 0,
+    explanation: "A man-in-the-middle attack occurs when an attacker intercepts or potentially alters communication between parties."
+},
+
+{
+    question: "Which helps protect against man-in-the-middle attacks?",
+    options: [
+        "Properly validated encryption and certificates",
+        "Plain HTTP",
+        "Shared passwords",
+        "Open Wi-Fi"
+    ],
+    answer: 0,
+    explanation: "Strong encryption combined with proper certificate validation helps defend against MITM attacks."
+},
+
+{
+    question: "What is a replay attack?",
+    options: [
+        "Capturing valid communication and retransmitting it later",
+        "Changing a MAC address",
+        "Deleting a database",
+        "Installing antivirus"
+    ],
+    answer: 0,
+    explanation: "A replay attack reuses captured valid messages to attempt unauthorized actions."
+},
+
+{
+    question: "What is network access control?",
+    options: [
+        "Restricting which devices can connect to a network",
+        "Changing monitor settings",
+        "Creating backups",
+        "Removing passwords"
+    ],
+    answer: 0,
+    explanation: "Network access control restricts network access based on device identity, security state or policy."
+},
+
+{
+    question: "What is NAC commonly used for?",
+    options: [
+        "Controlling and assessing devices before network access",
+        "Increasing disk space",
+        "Sending email",
+        "Creating databases"
+    ],
+    answer: 0,
+    explanation: "NAC can check devices and enforce access policies before or during network connection."
+},
+
+{
+    question: "What is endpoint detection and response (EDR)?",
+    options: [
+        "Technology for monitoring endpoints and responding to suspicious activity",
+        "A network cable",
+        "A DNS server",
+        "A database"
+    ],
+    answer: 0,
+    explanation: "EDR provides endpoint monitoring, detection and response capabilities."
+},
+
+{
+    question: "Why should security software be kept updated?",
+    options: [
+        "To improve detection and address known vulnerabilities",
+        "To reduce security",
+        "To disable logging",
+        "To remove backups"
+    ],
+    answer: 0,
+    explanation: "Updates can improve security capabilities and address vulnerabilities."
+},
+
+{
+    question: "What is email spoofing?",
+    options: [
+        "Forging email sender information",
+        "Encrypting email",
+        "Deleting email",
+        "Creating a mailbox"
+    ],
+    answer: 0,
+    explanation: "Email spoofing falsifies sender information to make a message appear to come from another source."
+},
+
+{
+    question: "Which technology can help verify authorized email senders?",
+    options: [
+        "SPF, DKIM and DMARC",
+        "FTP",
+        "ARP",
+        "Telnet"
+    ],
+    answer: 0,
+    explanation: "SPF, DKIM and DMARC are commonly used to improve email authentication and anti-spoofing."
+},
+
+{
+    question: "What does MFA reduce the risk of?",
+    options: [
+        "Account compromise from stolen passwords",
+        "Network cable failure",
+        "Disk fragmentation",
+        "Printer errors"
+    ],
+    answer: 0,
+    explanation: "MFA adds additional authentication factors, making stolen passwords alone less useful to attackers."
+},
+
+{
+    question: "What is a security control?",
+    options: [
+        "A safeguard used to reduce security risk",
+        "A network cable",
+        "A password only",
+        "A computer monitor"
+    ],
+    answer: 0,
+    explanation: "Security controls are safeguards designed to prevent, detect or respond to security risks."
+},
+
+{
+    question: "Which is an example of a preventive security control?",
+    options: [
+        "Firewall",
+        "Security incident report",
+        "Forensic investigation",
+        "Audit log review"
+    ],
+    answer: 0,
+    explanation: "Firewalls can prevent unauthorized traffic from reaching protected systems."
+},
+
+{
+    question: "Which is an example of a detective security control?",
+    options: [
+        "Intrusion detection system",
+        "Firewall rule",
+        "Password policy",
+        "Door lock"
+    ],
+    answer: 0,
+    explanation: "An IDS detects suspicious activity and generates alerts."
+},
+
+{
+    question: "Which is an example of a corrective security control?",
+    options: [
+        "Restoring a compromised system from a clean backup",
+        "Firewall",
+        "MFA",
+        "Password policy"
+    ],
+    answer: 0,
+    explanation: "Restoration from a clean backup is a corrective measure after an incident."
+},
+
+{
+    question: "What is security monitoring?",
+    options: [
+        "Continuously observing systems and events for security issues",
+        "Deleting logs",
+        "Sharing passwords",
+        "Disabling alerts"
+    ],
+    answer: 0,
+    explanation: "Security monitoring helps detect suspicious behavior and security incidents."
+},
+
+{
+    question: "Why should system clocks be synchronized?",
+    options: [
+        "To make event timelines and log correlation more accurate",
+        "To increase RAM",
+        "To change passwords",
+        "To create VLANs"
+    ],
+    answer: 0,
+    explanation: "Synchronized clocks improve the accuracy of event timelines and security investigations."
+},
+
+{
+    question: "What protocol is commonly used for time synchronization?",
+    options: [
+        "NTP",
+        "FTP",
+        "HTTP",
+        "SMTP"
+    ],
+    answer: 0,
+    explanation: "NTP, the Network Time Protocol, is commonly used for clock synchronization."
+},
+
+{
+    question: "What is a network topology?",
+    options: [
+        "The arrangement of devices and connections in a network",
+        "A password policy",
+        "A firewall rule",
+        "A malware type"
+    ],
+    answer: 0,
+    explanation: "Network topology describes how network devices and links are arranged."
+},
+
+{
+    question: "Which topology commonly connects devices to a central switch?",
+    options: [
+        "Star",
+        "Bus",
+        "Ring",
+        "Mesh"
+    ],
+    answer: 0,
+    explanation: "In a star topology, devices connect to a central device such as a switch."
+},
+
+{
+    question: "What is bandwidth?",
+    options: [
+        "The capacity of a network link to carry data",
+        "The delay of a packet",
+        "A password",
+        "A MAC address"
+    ],
+    answer: 0,
+    explanation: "Bandwidth describes the data-carrying capacity of a communication link."
+},
+
+{
+    question: "What is latency?",
+    options: [
+        "The delay experienced by data as it travels through a network",
+        "The amount of storage",
+        "A password",
+        "A firewall rule"
+    ],
+    answer: 0,
+    explanation: "Latency is the time delay associated with transmitting data."
+},
+
+{
+    question: "What is packet loss?",
+    options: [
+        "When network packets fail to reach their destination",
+        "When a password is changed",
+        "When a firewall starts",
+        "When DNS works"
+    ],
+    answer: 0,
+    explanation: "Packet loss occurs when packets are dropped or otherwise fail to reach the destination."
+},
+
+{
+    question: "What is QoS?",
+    options: [
+        "Quality of Service",
+        "Quick Operating System",
+        "Query Operating Security",
+        "Qualified Online Service"
+    ],
+    answer: 0,
+    explanation: "QoS mechanisms prioritize or manage network traffic to meet performance requirements."
+},
+
+{
+    question: "Which protocol is commonly used for routing between autonomous systems?",
+    options: [
+        "BGP",
+        "FTP",
+        "SMTP",
+        "ARP"
+    ],
+    answer: 0,
+    explanation: "BGP is the primary routing protocol used between autonomous systems on the Internet."
+},
+
+{
+    question: "What is an autonomous system?",
+    options: [
+        "A network or group of networks under a common routing administration",
+        "A password",
+        "A firewall",
+        "A Wi-Fi adapter"
+    ],
+    answer: 0,
+    explanation: "An autonomous system is a group of IP networks under common routing administration."
+},
+
+{
+    question: "Which protocol is commonly used for routing within an organization?",
+    options: [
+        "OSPF",
+        "SMTP",
+        "FTP",
+        "POP3"
+    ],
+    answer: 0,
+    explanation: "OSPF is a common interior gateway routing protocol."
+},
+
+{
+    question: "What is a default gateway?",
+    options: [
+        "The router used to reach networks outside the local subnet",
+        "A DNS record",
+        "A password",
+        "A firewall log"
+    ],
+    answer: 0,
+    explanation: "A default gateway forwards traffic destined for networks outside the local subnet."
+},
+
+{
+    question: "What is IPv6?",
+    options: [
+        "The newer version of the Internet Protocol designed to provide a much larger address space",
+        "A firewall",
+        "A password system",
+        "A Wi-Fi standard"
+    ],
+    answer: 0,
+    explanation: "IPv6 provides a much larger address space and other protocol improvements compared with IPv4."
+},
+
+{
+    question: "How many bits are in an IPv4 address?",
+    options: [
+        "16",
+        "32",
+        "64",
+        "128"
+    ],
+    answer: 1,
+    explanation: "An IPv4 address contains 32 bits."
+},
+
+{
+    question: "How many bits are in an IPv6 address?",
+    options: [
+        "32",
+        "64",
+        "128",
+        "256"
+    ],
+    answer: 2,
+    explanation: "An IPv6 address contains 128 bits."
+},
+
+{
+    question: "What is the main security advantage of segmentation?",
+    options: [
+        "It limits access and can reduce the spread of attacks",
+        "It removes all vulnerabilities",
+        "It eliminates passwords",
+        "It makes all traffic public"
+    ],
+    answer: 0,
+    explanation: "Segmentation can limit unauthorized access and reduce an attacker's ability to move through a network."
+},
+
+{
+    question: "What is a security incident playbook?",
+    options: [
+        "A documented set of procedures for handling a specific type of incident",
+        "A password list",
+        "A network cable",
+        "A database"
+    ],
+    answer: 0,
+    explanation: "Playbooks provide repeatable procedures for responding to specific incident scenarios."
+},
+
+{
+    question: "What is the purpose of an incident containment phase?",
+    options: [
+        "Limit the damage and spread of an incident",
+        "Delete all logs",
+        "Share passwords",
+        "Disable backups"
+    ],
+    answer: 0,
+    explanation: "Containment attempts to limit the scope and impact of an ongoing security incident."
+},
+
+{
+    question: "What is eradication in incident response?",
+    options: [
+        "Removing the root cause or malicious artifacts",
+        "Creating a password",
+        "Changing a monitor",
+        "Opening firewall ports"
+    ],
+    answer: 0,
+    explanation: "Eradication removes malware, attacker access and other causes of compromise."
+},
+
+{
+    question: "What is recovery in incident response?",
+    options: [
+        "Restoring systems to normal secure operation",
+        "Stealing credentials",
+        "Deleting backups",
+        "Opening all ports"
+    ],
+    answer: 0,
+    explanation: "Recovery restores systems and services while verifying that they are secure."
+},
+
+{
+    question: "What is a post-incident review?",
+    options: [
+        "An evaluation of what happened and how defenses can be improved",
+        "A password reset only",
+        "A network cable test",
+        "A DNS query"
+    ],
+    answer: 0,
+    explanation: "Post-incident reviews identify lessons learned and improvements."
+},
+
+{
+    question: "What is cyber hygiene?",
+    options: [
+        "Routine practices that maintain good cybersecurity",
+        "Cleaning computer hardware only",
+        "Changing monitors",
+        "Installing printers"
+    ],
+    answer: 0,
+    explanation: "Cyber hygiene includes routine security practices such as updates, strong passwords and backups."
+},
+
+{
+    question: "Which practice is part of good cyber hygiene?",
+    options: [
+        "Regularly applying security updates",
+        "Using default passwords",
+        "Sharing accounts",
+        "Disabling MFA"
+    ],
+    answer: 0,
+    explanation: "Regular security updates are an important part of maintaining secure systems."
+},
+
+{
+    question: "What is secure browsing?",
+    options: [
+        "Using trusted websites, HTTPS and safe browsing practices",
+        "Entering passwords into unknown sites",
+        "Disabling browser updates",
+        "Opening every attachment"
+    ],
+    answer: 0,
+    explanation: "Secure browsing includes verifying websites, using HTTPS and avoiding suspicious links and downloads."
+},
+
+{
+    question: "What should you do with a suspicious email attachment?",
+    options: [
+        "Do not open it unless verified as safe",
+        "Open it immediately",
+        "Forward it to everyone",
+        "Disable antivirus first"
+    ],
+    answer: 0,
+    explanation: "Suspicious attachments may contain malware and should be verified before opening."
+},
+
+{
+    question: "What should you do if you suspect your password has been compromised?",
+    options: [
+        "Change it immediately and follow the organization's incident process",
+        "Share it with colleagues",
+        "Keep using it",
+        "Disable MFA"
+    ],
+    answer: 0,
+    explanation: "A suspected compromised password should be changed promptly and the incident reported according to policy."
+},
+
+{
+    question: "Why should users avoid reusing passwords?",
+    options: [
+        "A breach of one service could expose accounts on other services",
+        "It slows the network",
+        "It disables DNS",
+        "It breaks Ethernet"
+    ],
+    answer: 0,
+    explanation: "Password reuse allows attackers to use credentials stolen from one service against other accounts."
+},
+
+{
+    question: "What is a password manager?",
+    options: [
+        "A tool for securely storing and generating passwords",
+        "A network switch",
+        "A firewall",
+        "A DNS server"
+    ],
+    answer: 0,
+    explanation: "Password managers can securely store and generate unique passwords."
+},
+
+{
+    question: "What is the main purpose of cybersecurity?",
+    options: [
+        "Protect systems, networks and information from threats",
+        "Increase screen resolution",
+        "Replace all hardware",
+        "Remove the Internet"
+    ],
+    answer: 0,
+    explanation: "Cybersecurity protects information systems and data against unauthorized access, disruption, alteration and destruction."
+}
+
+];
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentIndex = 0;
+let userAnswers = new Array(questions.length).fill(null);
+let timeRemaining = QUIZ_TIME_MINUTES * 60;
+let timerInterval = null;
+let quizStarted = false;
+let quizFinished = false;
+
+
+/* =========================================================
+   DOM ELEMENTS
+   ========================================================= */
+
+const startScreen = document.getElementById("startScreen");
+const quizScreen = document.getElementById("quizScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const currentQuestionElement =
+    document.getElementById("currentQuestion");
+
+const totalQuestionsElement =
+    document.getElementById("totalQuestions");
+
+const timerElement =
+    document.getElementById("timer");
+
+const progressBar =
+    document.getElementById("progressBar");
+
+const questionText =
+    document.getElementById("questionText");
+
+const optionsContainer =
+    document.getElementById("optionsContainer");
+
+const previousBtn =
+    document.getElementById("previousBtn");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+const finishBtn =
+    document.getElementById("finishBtn");
+
+const questionMap =
+    document.getElementById("questionMap");
+
+
+/* =========================================================
+   INITIALIZATION
+   ========================================================= */
+
+totalQuestionsElement.textContent = questions.length;
+
+
+/* =========================================================
+   START QUIZ
+   ========================================================= */
+
+function startQuiz() {
+
+    if (questions.length !== 100) {
+        alert(
+            "Warning: The quiz currently contains " +
+            questions.length +
+            " questions instead of 100."
+        );
+    }
+
+    currentIndex = 0;
+    userAnswers = new Array(questions.length).fill(null);
+
+    timeRemaining = QUIZ_TIME_MINUTES * 60;
+
+    quizStarted = true;
+    quizFinished = false;
+
+    startScreen.style.display = "none";
+    resultScreen.style.display = "none";
+    quizScreen.style.display = "block";
+
+    createQuestionMap();
+    displayQuestion();
+    updateTimer();
+
+    clearInterval(timerInterval);
+
+    timerInterval = setInterval(function () {
+
+        if (timeRemaining > 0) {
+
+            timeRemaining--;
+
+            updateTimer();
+
+        } else {
+
+            clearInterval(timerInterval);
+
+            alert(
+                "Time is up! Your examination will be submitted automatically."
+            );
+
+            finishQuiz(true);
+        }
+
+    }, 1000);
+
+}
+
+
+/* =========================================================
+   DISPLAY QUESTION
+   ========================================================= */
+
+function displayQuestion() {
+
+    const q = questions[currentIndex];
+
+    currentQuestionElement.textContent =
+        currentIndex + 1;
+
+    totalQuestionsElement.textContent =
+        questions.length;
+
+    questionText.textContent =
+        q.question;
+
+    optionsContainer.innerHTML = "";
+
+    q.options.forEach(function(option, index) {
+
+        const optionElement =
+            document.createElement("div");
+
+        optionElement.className = "option";
+
+        optionElement.textContent =
+            String.fromCharCode(65 + index) +
+            ". " +
+            option;
+
+        if (userAnswers[currentIndex] === index) {
+            optionElement.classList.add("selected");
+        }
+
+        optionElement.addEventListener(
+            "click",
+            function() {
+                selectAnswer(index);
+            }
+        );
+
+        optionsContainer.appendChild(optionElement);
+
+    });
+
+    updateProgress();
+    updateNavigation();
+    updateQuestionMap();
+
+}
+
+
+/* =========================================================
+   SELECT ANSWER
+   ========================================================= */
+
+function selectAnswer(answerIndex) {
+
+    if (quizFinished) {
+        return;
+    }
+
+    userAnswers[currentIndex] =
+        answerIndex;
+
+    displayQuestion();
+}
+
+
+/* =========================================================
+   NEXT QUESTION
+   ========================================================= */
+
+function nextQuestion() {
+
+    if (currentIndex < questions.length - 1) {
+
+        currentIndex++;
+
+        displayQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    } else {
+
+        confirmFinish();
+
+    }
+
+}
+
+
+/* =========================================================
+   PREVIOUS QUESTION
+   ========================================================= */
+
+function previousQuestion() {
+
+    if (currentIndex > 0) {
+
+        currentIndex--;
+
+        displayQuestion();
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function updateNavigation() {
+
+    previousBtn.disabled =
+        currentIndex === 0;
+
+    if (currentIndex === questions.length - 1) {
+
+        nextBtn.style.display = "none";
+        finishBtn.style.display = "inline-block";
+
+    } else {
+
+        nextBtn.style.display = "inline-block";
+        finishBtn.style.display = "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+function updateProgress() {
+
+    const progress =
+        ((currentIndex + 1) / questions.length) * 100;
+
+    progressBar.style.width =
+        progress + "%";
+
+}
+
+
+/* =========================================================
+   QUESTION MAP
+   ========================================================= */
+
+function createQuestionMap() {
+
+    questionMap.innerHTML = "";
+
+    questions.forEach(function(_, index) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "map-btn";
+
+        button.textContent =
+            index + 1;
+
+        button.onclick = function() {
+
+            currentIndex = index;
+
+            displayQuestion();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        };
+
+        questionMap.appendChild(button);
+
+    });
+
+}
+
+
+function updateQuestionMap() {
+
+    const buttons =
+        document.querySelectorAll(".map-btn");
+
+    buttons.forEach(function(button, index) {
+
+        button.classList.remove(
+            "current",
+            "answered"
+        );
+
+        if (index === currentIndex) {
+            button.classList.add("current");
+        }
+
+        if (userAnswers[index] !== null) {
+            button.classList.add("answered");
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+function updateTimer() {
+
+    const minutes =
+        Math.floor(timeRemaining / 60);
+
+    const seconds =
+        timeRemaining % 60;
+
+    timerElement.textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+    timerElement.classList.remove(
+        "safe",
+        "warning"
+    );
+
+    if (timeRemaining <= 300) {
+
+        timerElement.classList.add("warning");
+
+    } else {
+
+        timerElement.classList.add("safe");
+
+    }
+
+}
+
+
+/* =========================================================
+   FINISH CONFIRMATION
+   ========================================================= */
+
+function confirmFinish() {
+
+    const unanswered =
+        userAnswers.filter(
+            answer => answer === null
+        ).length;
+
+    let message =
+        "Are you sure you want to finish the examination?";
+
+    if (unanswered > 0) {
+
+        message +=
+            "\n\nYou have " +
+            unanswered +
+            " unanswered question(s).";
+
+    }
+
+    if (confirm(message)) {
+
+        finishQuiz(false);
+
+    }
+
+}
+
+
+/* =========================================================
+   FINISH QUIZ
+   ========================================================= */
+
+function finishQuiz(autoSubmitted) {
+
+    if (quizFinished) {
+        return;
+    }
+
+    quizFinished = true;
+
+    clearInterval(timerInterval);
+
+    let correct = 0;
+    let wrong = 0;
+    let unanswered = 0;
+
+    questions.forEach(function(question, index) {
+
+        if (userAnswers[index] === null) {
+
+            unanswered++;
+
+        } else if (
+            userAnswers[index] === question.answer
+        ) {
+
+            correct++;
+
+        } else {
+
+            wrong++;
+
+        }
+
+    });
+
+    const percentage =
+        Math.round(
+            (correct / questions.length) * 100
+        );
+
+    document.getElementById("correctCount")
+        .textContent = correct;
+
+    document.getElementById("wrongCount")
+        .textContent = wrong;
+
+    document.getElementById("unansweredCount")
+        .textContent = unanswered;
+
+    document.getElementById("percentage")
+        .textContent = percentage + "%";
+
+    const resultMessage =
+        document.getElementById("resultMessage");
+
+    if (percentage >= 80) {
+
+        resultMessage.textContent =
+            "Excellent! Outstanding performance.";
+
+    } else if (percentage >= 70) {
+
+        resultMessage.textContent =
+            "Very Good! You have a strong understanding.";
+
+    } else if (percentage >= 50) {
+
+        resultMessage.textContent =
+            "Passed. Keep studying to improve further.";
+
+    } else {
+
+        resultMessage.textContent =
+            "Needs Improvement. Review the questions and try again.";
+
+    }
+
+    quizScreen.style.display = "none";
+    resultScreen.style.display = "block";
+
+    buildReview();
+    buildAnswerKey();
+
+    if (autoSubmitted) {
+
+        resultMessage.textContent +=
+            " The examination was automatically submitted because the time expired.";
+
+    }
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   REVIEW ANSWERS
+   ========================================================= */
+
+function buildReview() {
+
+    const container =
+        document.getElementById("reviewContainer");
+
+    container.innerHTML = "";
+
+    questions.forEach(function(question, index) {
+
+        const item =
+            document.createElement("div");
+
+        item.className = "review-item";
+
+        const title =
+            document.createElement("h3");
+
+        title.textContent =
+            (index + 1) +
+            ". " +
+            question.question;
+
+        item.appendChild(title);
+
+        const userAnswer =
+            userAnswers[index];
+
+        if (userAnswer === null) {
+
+            const unanswered =
+                document.createElement("div");
+
+            unanswered.className =
+                "review-answer review-unanswered";
+
+            unanswered.textContent =
+                "Your answer: Not answered";
+
+            item.appendChild(unanswered);
+
+        } else if (
+            userAnswer === question.answer
+        ) {
+
+            const correct =
+                document.createElement("div");
+
+            correct.className =
+                "review-answer review-correct";
+
+            correct.textContent =
+                "Your answer: " +
+                question.options[userAnswer] +
+                " ✓";
+
+            item.appendChild(correct);
+
+        } else {
+
+            const wrong =
+                document.createElement("div");
+
+            wrong.className =
+                "review-answer review-wrong";
+
+            wrong.textContent =
+                "Your answer: " +
+                question.options[userAnswer] +
+                " ✗";
+
+            item.appendChild(wrong);
+
+            const correct =
+                document.createElement("div");
+
+            correct.className =
+                "review-answer review-correct";
+
+            correct.textContent =
+                "Correct answer: " +
+                question.options[question.answer] +
+                " ✓";
+
+            item.appendChild(correct);
+
+        }
+
+        const explanation =
+            document.createElement("div");
+
+        explanation.className =
+            "explanation";
+
+        explanation.innerHTML =
+            "<strong>Explanation:</strong> " +
+            question.explanation;
+
+        item.appendChild(explanation);
+
+        container.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================================================
+   TOGGLE REVIEW
+   ========================================================= */
+
+function toggleReview() {
+
+    const container =
+        document.getElementById("reviewContainer");
+
+    if (container.style.display === "block") {
+
+        container.style.display = "none";
+
+    } else {
+
+        container.style.display = "block";
+
+        document.getElementById(
+            "answerKeyContainer"
+        ).style.display = "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   ANSWER KEY
+   ========================================================= */
+
+function buildAnswerKey() {
+
+    const grid =
+        document.getElementById("answerKeyGrid");
+
+    grid.innerHTML = "";
+
+    questions.forEach(function(question, index) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "answer-key-item";
+
+        item.textContent =
+            "Q" +
+            (index + 1) +
+            ": " +
+            String.fromCharCode(
+                65 + question.answer
+            );
+
+        grid.appendChild(item);
+
+    });
+
+}
+
+
+function toggleAnswerKey() {
+
+    const container =
+        document.getElementById(
+            "answerKeyContainer"
+        );
+
+    if (container.style.display === "block") {
+
+        container.style.display = "none";
+
+    } else {
+
+        container.style.display = "block";
+
+        document.getElementById(
+            "reviewContainer"
+        ).style.display = "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   RESTART
+   ========================================================= */
+
+function restartQuiz() {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to restart the quiz?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    clearInterval(timerInterval);
+
+    currentIndex = 0;
+
+    userAnswers =
+        new Array(questions.length).fill(null);
+
+    timeRemaining =
+        QUIZ_TIME_MINUTES * 60;
+
+    quizStarted = false;
+    quizFinished = false;
+
+    document.getElementById(
+        "reviewContainer"
+    ).style.display = "none";
+
+    document.getElementById(
+        "answerKeyContainer"
+    ).style.display = "none";
+
+    resultScreen.style.display = "none";
+    quizScreen.style.display = "none";
+    startScreen.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   KEYBOARD SUPPORT
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (!quizStarted || quizFinished) {
+            return;
+        }
+
+        if (
+            event.key === "ArrowRight" &&
+            currentIndex < questions.length - 1
+        ) {
+
+            nextQuestion();
+
+        }
+
+        if (
+            event.key === "ArrowLeft" &&
+            currentIndex > 0
+        ) {
+
+            previousQuestion();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SECURITY / PAGE PROTECTION NOTICE
+   ========================================================= */
+
+/*
+    IMPORTANT:
+
+    This is a client-side quiz.
+
+    Therefore, the questions and answers are present
+    inside the browser's JavaScript source.
+
+    This is suitable for practice, training and simple
+    online quizzes.
+
+    For a secure professional examination system, answers
+    should be stored on a server and validated server-side.
+*/
+
+
+/* =========================================================
+   COPYRIGHT
+   ========================================================= */
+
+/*
+    Copyright © 2026 Magarsa S.
+    All Rights Reserved.
+*/
+
+</script>
+
+</body>
+</html>
